@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:alpine as builder
 USER node
 RUN mkdir -p /home/node/app
 WORKDIR /home/node/app
@@ -9,4 +9,5 @@ CMD ["npm", "start"]
 
 
 FROM nginx
-COPY --from=0 /home/node/app/build /usr/share/nginx/html
+EXPOSE 80
+COPY --from=builder /home/node/app/build /usr/share/nginx/html
