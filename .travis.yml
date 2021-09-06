@@ -19,5 +19,4 @@ deploy: # to deploy application
   on:
     branch: master # only deploy/re-deploy when pushed/merged to master
   access_key_id: $AWS_ACCESS_KEY # should be $<name-of-key-in-travis-ci.com>
-  secret_access_key:
-    secure: "$AWS_SECRET_KEY" # should be $<name-of-key-in-travis-ci.com>
+  secret_access_key: $AWS_SECRET_KEY # should be $<name-of-key-in-travis-ci.com>
