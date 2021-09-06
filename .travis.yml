@@ -3,8 +3,21 @@ sudo: required
 services:
   - docker
 
-before_install:
+before_install: # initial image
   - docker build -t ashvatb2/docker-react -f Dockerfile.dev .
 
-script:
+script: #running test on imitial image
   - docker run -e CI=true ashvatb2/docker-react npm run test -- --coverage
+
+deploy: # to deploy application
+  provider: elasticbeanstalk
+  region: "us-east-2" # get from the elasticbeanstalk url
+  app: "docker-react" # name of the application
+  env: "Dockerreact-env" # name of the environment that was created
+  bucket_name: "elasticbeanstalk-us-east-2-017127218903" # files are stored in an S3 bucket
+  bucket_path: "docker-react" # first time the folder for app in bucket is not created, so provide app name
+  on:
+    branch: master # only deploy/re-deploy when pushed/merged to master
+  access_key_id: $AWS_ACCESS_KEY # should be $<name-of-key-in-travis-ci.com>
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY" # should be $<name-of-key-in-travis-ci.com>
